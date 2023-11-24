@@ -1,9 +1,9 @@
 #include <iostream>
-#include <vector>
 #include <cmath>
+#include <vector>
 using namespace std;
 
-void gaussElimination(double A[3][3], double B[3], double* x) {
+void gaussElimination(vector<vector<double>> A, vector<double> B, vector<double>& x) {
     for (int i = 0; i < 3; i++) {
         int maxRow = i;
         for (int k = i + 1; k < 3; k++) {
@@ -22,9 +22,11 @@ void gaussElimination(double A[3][3], double B[3], double* x) {
             B[k] -= factor * B[i];
         }
     }
-
+    for (int i = 0; i < 3; i++)
+    {
+        x.push_back(B[i]);
+    }
     for (int i = 2; i >= 0; i--) {
-        x[i] = B[i];
         for (int j = i + 1; j < 3; j++) {
             x[i] -= A[i][j] * x[j];
         }
@@ -35,12 +37,8 @@ void gaussElimination(double A[3][3], double B[3], double* x) {
     for (int i = 0; i < 3; i++) {
         cout << "x[" << i << "] = " << x[i] << endl;
     }
-
-
-
-    /*cout << "Relative error: " << relativeError << endl;*/
 }
-void residualVector(double A[3][3], double B[3], double x[3])
+void residualVector(vector<vector<double>> A, vector<double> B, vector<double> x)
 {
     double residual[3];
     double maxResidual = 0.0;
@@ -59,48 +57,19 @@ void residualVector(double A[3][3], double B[3], double x[3])
     }
     cout << "max residual = " << maxResidual << endl;
 }
-void relativeError(double A[3][3], double x[3])
+void relativeError(vector<vector<double>> A, vector<double> x)
 {
-    double b[3];
+    vector<double> b;
     for (int i = 0; i < 3; i++)
     {
-        b[i] = 0;
+        b.push_back(0);
         for (int j = 0; j < 3; j++)
         {
             b[i] += A[i][j] * x[j];
         }
     }
-    double _x[3];
-    for (int i = 0; i < 3; i++) {
-        int maxRow = i;
-        for (int k = i + 1; k < 3; k++) {
-            if (abs(A[k][i]) > abs(A[maxRow][i])) {
-                maxRow = k;
-            }
-        }
-        swap(A[maxRow], A[i]);
-        swap(b[maxRow], b[i]);
-
-        for (int k = i + 1; k < 3; k++) {
-            double factor = A[k][i] / A[i][i];
-            for (int j = i; j < 3; j++) {
-                A[k][j] -= factor * A[i][j];
-            }
-            b[k] -= factor * b[i];
-        }
-    }
-
-    for (int i = 2; i >= 0; i--) {
-        _x[i] = b[i];
-        for (int j = i + 1; j < 3; j++) {
-            _x[i] -= A[i][j] * _x[j];
-        }
-        _x[i] /= A[i][i];
-    }
-    cout << "Solution vector:" << endl;
-    for (int i = 0; i < 3; i++) {
-        cout << "x[" << i << "] = " << _x[i] << endl;
-    }
+    vector<double> _x;
+    gaussElimination(A, b, _x);
     double maxX = 0.0;
     double maxGap = 0.0;
     for (int i = 0; i < 3; i++)
@@ -117,11 +86,11 @@ void relativeError(double A[3][3], double x[3])
     cout << "Relative error: " << maxGap / maxX << endl;
 }
 int main() {
-    double A[3][3] = { {2.31, 31.49, 1.52},
+    vector<vector<double>> A = { {2.31, 31.49, 1.52},
                                 {4.21, 22.42, 3.85},
                                 {3.49, 4.85, 28.72} };;
-    double b[3] = { 40.95, 30.24, 42.81 };
-    double x[3];
+    vector<double> b = { 40.95, 30.24, 42.81 };
+    vector<double> x;
     gaussElimination(A, b, x);
     residualVector(A, b, x);
     relativeError(A, x);
