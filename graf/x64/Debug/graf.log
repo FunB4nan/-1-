@@ -1,0 +1,3 @@
+﻿  Source.cpp
+D:\VSProjects\graf\Source.cpp(148,24): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+  graf.vcxproj -> D:\VSProjects\graf\x64\Debug\graf.exe
