@@ -77,7 +77,6 @@ void newtonWithMyJacobi(double x1, double x2, double eps = 1e-9, int max_iter = 
         vector<double> F = f(x);
         vector<double> dx;
         jac(x[0], x[1], jacobi);
-        anotherJac(x, jacobi, 0.1);
         gaussElimination(jacobi, F, dx);
         double maxF;
         double maxGap = 0;
