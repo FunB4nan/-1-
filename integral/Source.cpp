@@ -77,7 +77,11 @@ int main() {
     double b = 2.835;
     double n = 1000;
     double m = 1000;
+    cout << "e = 10e-4" << endl;
     cout << "Trapezoidal integration result: " << trapezoidalIntegration(a, b, 10e-4) << endl;
     cout << "Simpson integration result: " << simpsonIntegration(a, b, 10e-4) << endl;
+    cout << "e = 10e-5" << endl;
+    cout << "Trapezoidal integration result: " << trapezoidalIntegration(a, b, 10e-5) << endl;
+    cout << "Simpson integration result: " << simpsonIntegration(a, b, 10e-5) << endl;
     cout << "Cube simpson integration result: " << cubeSimpsonIntegration(0, 0.4, 1.0, 2.0, n,m) << endl;
 }
