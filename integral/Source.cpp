@@ -10,7 +10,8 @@ double f2(double x, double y)
 {
     return x * x / (1 + y * y);
 }
-double trapezoidalIntegration(double a, double b, int n) {
+double integralTrapezia(double a, double b, int n)
+{
     double h = (b - a) / n;
     double sum = h / 2 * (f(a) + f(b));
     for (int i = 1; i < n; i++) {
@@ -19,8 +20,8 @@ double trapezoidalIntegration(double a, double b, int n) {
     }
     return sum;
 }
-
-double simpsonIntegration(double a, double b, int n) {
+double integralSimpson(double a, double b, int n)
+{
     double h = (b - a) / (2 * n);
     double sum = h / 3 * (f(a) + f(b));
     for (int i = 1; i < 2 * n; i += 2) {
@@ -32,6 +33,23 @@ double simpsonIntegration(double a, double b, int n) {
         sum += 2 * f(x) * h / 3;
     }
     return sum;
+}
+double trapezoidalIntegration(double a, double b, double eps) {
+    int n = 2;
+    while (integralTrapezia(a, b, n * 2) - integralTrapezia(a, b, n) > 3 * eps)
+    {
+        n *= 2;
+    }
+    return integralTrapezia(a, b,n);
+}
+
+double simpsonIntegration(double a, double b, double eps) {
+    int n = 2;
+    while (integralSimpson(a, b, n * 2) - integralSimpson(a, b, n) > 15 * eps)
+    {
+        n *= 2;
+    }
+    return integralSimpson(a, b, n);
 }
 double cubeSimpsonIntegration(double a, double b, double c, double d, int n, int m)
 {
@@ -57,10 +75,9 @@ double cubeSimpsonIntegration(double a, double b, double c, double d, int n, int
 int main() {
     double a = 1.0;
     double b = 2.835;
-    int n = 1000;
-    int m = 1000;
-
-    cout << "Trapezoidal integration result: " << trapezoidalIntegration(a, b, n) << endl;
-    cout << "Simpson integration result: " << simpsonIntegration(a, b, n) << endl;
+    double n = 1000;
+    double m = 1000;
+    cout << "Trapezoidal integration result: " << trapezoidalIntegration(a, b, 10e-4) << endl;
+    cout << "Simpson integration result: " << simpsonIntegration(a, b, 10e-4) << endl;
     cout << "Cube simpson integration result: " << cubeSimpsonIntegration(0, 0.4, 1.0, 2.0, n,m) << endl;
 }
